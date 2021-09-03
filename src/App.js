@@ -8,11 +8,11 @@ import StopWatch from './components/StopWatch';
 function App() {
   return (
     <div className="App">
-      <Greeting />
-      {/* <StopWatch />
-      <ActionLink />
-      <HeroList />
-      <SignupForm /> */}
+      {/* <Greeting /> */}
+      <StopWatch />
+      {/* <HeroList /> */}
+      {/* <ActionLink /> */}
+      {/* <SignupForm /> */}
     </div>
   );
 }

@@ -216,11 +216,14 @@ const StopWatch = () => {
     const [count, setCount] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
   
-    // useRef will give you the same ref object on every render.
-    // https://reactjs.org/docs/hooks-reference.html#useref
+    /**
+     * useRef will give you the same ref object on every render.
+     * https://reactjs.org/docs/hooks-reference.html#useref
+     * useRef is like "box" into which you can put anything
+     * { current: null }
+     */
     let intervalId = useRef(null);
-    // useRef is like "box" into which you can put anything
-    // { current: null }
+    
   
     const start = () => {
       setCount(0);

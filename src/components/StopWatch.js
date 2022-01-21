@@ -50,13 +50,6 @@
 
 // // export default StopWatch;
 
-
-
-
-
-
-
-
 // // stop watch to do list
 // // #1. seconds + 1
 // // #2. start button
@@ -111,7 +104,6 @@
 
 // export default StopWatch
 
-
 // import React from 'react'
 
 // class StopWatch extends React.Component {
@@ -159,8 +151,7 @@
 
 // export default StopWatch
 
-
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from "react";
 
 // class StopWatch extends React.Component {
 
@@ -203,7 +194,7 @@ import React, { useState, useRef } from 'react'
 //     return (
 //       <>
 //         <div>{this.state.counter}</div>
-//         <button 
+//         <button
 //           onClick={this.start}
 //           disabled={this.state.isStartBtnDisabled}>start</button>
 //         <button onClick={this.stop}>stop</button>
@@ -212,48 +203,67 @@ import React, { useState, useRef } from 'react'
 //   }
 // }
 
-const StopWatch = () => {
-    const [count, setCount] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-  
-    /**
-     * useRef will give you the same ref object on every render.
-     * https://reactjs.org/docs/hooks-reference.html#useref
-     * useRef is like "box" into which you can put anything
-     * { current: null }
-     */
-    let intervalId = useRef(null);
-    
-  
-    const start = () => {
-      setCount(0);
-      setIsRunning(true);
-      
-      intervalId.current = setInterval(() => {
-        setCount((prevCount) => prevCount + 1);
-        /**
-         * the code below only increase from 0 to 1 due to closure
-         * the value of count is cached after each stop
-         */
-        // console.log('setInterval tick', count)
-        // setCount(count + 1);
-      }, 1);
-    };
-  
-    const stop = () => {
-      setIsRunning(false);
-      clearInterval(intervalId.current);
-    };
-  
-    return (
-      <>
-        <h1>{count}</h1>
-        <button onClick={start} disabled={isRunning}>
-          start
-        </button>
-        <button onClick={stop}>stop</button>
-      </>
-    );
-}
+/**
+ * timer can be defined as a global variable
+ * but this will only work when singleton instance is being called.
+ *
+ * if we have 2 or more StopWatch, and and click start button for all watches
+ * the stop button will work for the last watch, because global variable is overwritten to be the last intervalID
+ *
+ * so only option left here is useRef hook, it will always return the same ref object({current: refValue}) on every re-render
+ */
+let timer;
 
-export default StopWatch
+const StopWatch = () => {
+  const [count, setCount] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  /**
+   * useRef will give you the same ref object on every render.
+   * https://reactjs.org/docs/hooks-reference.html#useref
+   * useRef is like "box" into which you can put anything
+   * { current: null }
+   */
+  let intervalId = useRef(null);
+
+  /**
+   * if we define a variable in function component
+   * the timer is always the initial the value in stop function
+   * stop function cannot capture the new intervalID which defined in start function
+   */
+  let timer;
+
+  const start = () => {
+    setCount(0);
+    setIsRunning(true);
+
+    intervalId.current = setInterval(() => {
+      setCount((prevCount) => prevCount + 1);
+      /**
+       * the code below only increase from 0 to 1, because count is always 0
+       * to get latest count, we need to use callback way to change state
+       */
+      // console.log("setInterval tick", count);
+      // setCount(count + 1);
+    }, 1);
+
+    console.log(timer);
+  };
+
+  const stop = () => {
+    setIsRunning(false);
+    clearInterval(intervalId.current);
+  };
+
+  return (
+    <>
+      <h1>{count}</h1>
+      <button onClick={start} disabled={isRunning}>
+        start
+      </button>
+      <button onClick={stop}>stop</button>
+    </>
+  );
+};
+
+export default StopWatch;

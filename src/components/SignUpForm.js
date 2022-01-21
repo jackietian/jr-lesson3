@@ -103,7 +103,8 @@ class SignUpForm extends Component {
       <div>
         <label htmlFor="username">username</label>
         <input 
-          type="text" 
+          type="text"
+          id="username"
           name="username" 
           value={this.state.username} 
           onChange={this.handleFormOnChange} />
@@ -112,6 +113,7 @@ class SignUpForm extends Component {
         <label htmlFor="password">password</label>
         <input 
           type="password" 
+          id="password"
           name="password" 
           value={this.state.password}
           onChange={this.handleFormOnChange} />
